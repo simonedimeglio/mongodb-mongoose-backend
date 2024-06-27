@@ -1,7 +1,8 @@
 // Importa il modulo Mongoose per la gestione del database MongoDB
 import { Schema, model } from "mongoose";
 
-// Definizione dello schema dell'utente utilizzando il costruttore Schema di Mongoose
+// Definizione dello schema dell'utente utilizzando il
+// costruttore Schema di Mongoose
 const userSchema = new Schema(
   {
     // Campo 'name' di tipo String obbligatorio (required)
@@ -29,8 +30,10 @@ const userSchema = new Schema(
   },
   {
     // Opzioni dello schema:
-    collection: "users", // Specifica il nome della collezione nel database MongoDB
-  }
+    collection: "users",
+    // Specifica il nome della collezione
+    // nel database MongoDB
+  },
 );
 
 // Esporta il modello 'User' utilizzando il metodo model di Mongoose

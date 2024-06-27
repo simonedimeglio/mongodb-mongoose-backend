@@ -1,4 +1,4 @@
-## Mongoose App: passaggi per ricreare il progetto
+# Mongoose App: passaggi per ricreare il progetto
 
 1. **Crea una nuova directory per il progetto e inizializza:**
 ```bash
@@ -6,13 +6,13 @@ mkdir mongoose-app
 cd mongoose-app
 npm init -y
 ```
-In `package.json` inseriamo: 
+In `package.json` inseriamo:
 
 ```javascript
   "type": "module",
 ```
 
-2. **Installiamo le dipendenze:** 
+2. **Installiamo le dipendenze:**
 ```bash
 npm install express mongoose dotenv
 ```
@@ -194,3 +194,43 @@ node server.js
 ```
 
 9. **Testiamo le API su Postman**
+
+10. **Creazione del progetto React per gestire i dati latro Frontend**
+
+11. **Paginazione Server-Side**
+
+Per implementare la paginazione server-side in MongoDB utilizzando Mongoose, dovremo modificare principalmente il file `userRoutes.js`.
+In particolare dobbiamo modificare la get a "/" per poter passare anche tutti i dati di paginazione!
+
+```javascript
+router.get("/", async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const sort = req.query.sort || "name";
+    const sortDirection = req.query.sortDirection === "desc" ? -1 : 1;
+    const skip = (page - 1) * limit;
+
+    const users = await User.find({})
+      .sort({ [sort]: sortDirection })
+      .skip(skip)
+      .limit(limit);
+
+    const total = await User.countDocuments();
+
+    res.json({
+      users,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalUsers: total,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+```
+Il codice originale restituiva tutti gli utenti in una singola risposta.
+Il nuovo codice implementa la paginazione, l'ordinamento e fornisce metadati sulla paginazione.
+Implementando queste modifiche, hai trasformato una semplice API in una soluzione più robusta e flessibile per la gestione degli utenti, adatta a scenari con grandi quantità di dati.
+
+Controlla il file `userRoutes` di questa repository per vedere il codice commentato in ogni suo passaggio.
